@@ -1,141 +1,125 @@
-<?php
-$conn = mysqli_connect("localhost","root","","konseling");
-
-if(isset($_POST['submit'])){
-
-    $nama = $_POST['nama'];
-    $umur = $_POST['umur'];
-    $alamat = $_POST['alamat'];
-    $keluhan = $_POST['keluhan'];
-    $jadwal = $_POST['jadwal'];
-
-    mysqli_query($conn, "INSERT INTO konsultasi VALUES(
-        '',
-        '$nama',
-        '$umur',
-        '$alamat',
-        '$keluhan',
-        '$jadwal',
-        NOW()
-    )");
-
-    $pesan = "Halo Mas Munib%0A%0A";
-    $pesan .= "Nama : $nama%0A";
-    $pesan .= "Umur : $umur%0A";
-    $pesan .= "Alamat : $alamat%0A";
-    $pesan .= "Keluhan : $keluhan%0A";
-    $pesan .= "Jadwal : $jadwal";
-
-    header("Location: https://wa.me/6285232259397?text=$pesan");
-    exit;
-}
-?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<title>Form Konseling - Bersama Mas Munib</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Form Konseling</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial;
-}
-
 body{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(rgba(80,0,0,0.92), rgba(120,0,0,0.95));
-    color:white;
-    padding:20px;
+  margin:0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  letter-spacing:0.2px;
+  line-height:1.4;
+
+  background:#4b0000;
+  color:white;
+
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  padding:40px 15px;
+  box-sizing:border-box;
 }
 
 .box{
-    width:100%;
-    max-width:550px;
-    padding:35px;
-    border-radius:20px;
-    background:rgba(255,255,255,0.08);
-    border:1px solid rgba(255,255,255,0.15);
-    backdrop-filter:blur(8px);
+  width:100%;
+  max-width:480px;
+
+  background:rgba(255,255,255,0.10);
+  padding:30px;
+
+  border-radius:18px;
+
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.15);
+
+  box-shadow:0 15px 35px rgba(0,0,0,0.35);
+}
+
+.logo{
+  width:80px;
+  display:block;
+  margin:0 auto 15px auto;
+  opacity:0.9;
 }
 
 h2{
-    font-size:32px;
-    margin-bottom:10px;
-}
-
-.desc{
-    font-size:14px;
-    margin-bottom:20px;
-    opacity:0.9;
-}
-
-label{
-    display:block;
-    margin:10px 0 5px;
-    font-size:14px;
+  text-align:center;
+  margin-bottom:20px;
+  color:#ffd7d7;
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:0.5px;
 }
 
 input, textarea{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:12px;
-    margin-bottom:15px;
-    background:rgba(255,255,255,0.12);
-    color:white;
-    outline:none;
+  width:100%;
+  padding:12px;
+
+  margin-bottom:12px;
+
+  border:none;
+  border-radius:10px;
+
+  outline:none;
+  font-size:14px;
+
+  background:rgba(255,255,255,0.9);
+  font-family: inherit;
+}
+
+input[type="datetime-local"]{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+
+  border:none;
+  border-radius:10px;
+
+  outline:none;
+  font-size:14px;
+
+  background:rgba(255,255,255,0.9);
+  font-family: inherit;
 }
 
 textarea{
-    resize:none;
+  height:100px;
+  resize:none;
 }
 
+/* tombol */
 button{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:50px;
-    background:white;
-    color:#7a0000;
-    font-weight:bold;
-    cursor:pointer;
+  width:100%;
+  padding:13px;
+
+  border:none;
+  border-radius:12px;
+
+  background:#ffdddd;
+  color:#7a0000;
+  font-weight:bold;
+
+  cursor:pointer;
+  transition:0.3s;
+  font-family: inherit;
 }
 
 button:hover{
-    background:#ffd9d9;
+  background:#ffc7c7;
+  transform:translateY(-2px);
 }
 
-/* 🔐 ADMIN LOGIN MINI */
-.admin-login{
-    margin-top:25px;
-    text-align:center;
+small{
+  display:block;
+  text-align:center;
+  margin-top:10px;
+  color:#ffcccc;
+  font-size:12px;
 }
-
-.admin-login h5{
-    font-size:12px;
-    font-weight:300;
-    opacity:0.7;
-    margin-bottom:10px;
-}
-
-.admin-login input{
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:none;
-    margin-bottom:10px;
-    background:rgba(255,255,255,0.1);
-    color:white;
-}
-
 </style>
 </head>
 
@@ -143,56 +127,81 @@ button:hover{
 
 <div class="box">
 
-    <h2>Form Konseling</h2>
+  <img src="white-logo.png" class="logo" alt="logo cordova">
 
-    <p class="desc">
-        Isi data dengan jujur sebelum menghubungi Mas Munib via WhatsApp.
-    </p>
+  <h2>Form Konseling Mas Munib</h2>
 
-    <form method="POST">
+  <input type="text" id="nama" placeholder="Nama lengkap">
+  <input type="number" id="umur" placeholder="Umur">
+  <input type="text" id="alamat" placeholder="Alamat">
 
-        <label>Nama</label>
-        <input type="text" name="nama" required>
+  <textarea id="cerita" placeholder="Ceritakan sedikit masalahmu"></textarea>
 
-        <label>Umur</label>
-        <input type="text" name="umur" required>
+  <input type="datetime-local" id="jadwal">
 
-        <label>Alamat</label>
-        <textarea name="alamat" rows="3" required></textarea>
+  <button onclick="kirimWA()">Kirim ke WhatsApp</button>
 
-        <label>Keluhan</label>
-        <textarea name="keluhan" rows="4" required></textarea>
-
-        <label>Jadwal</label>
-        <input type="datetime-local" name="jadwal" required>
-
-        <button type="submit" name="submit">Kirim & WhatsApp</button>
-    </form>
-
-    <!-- 🔐 LOGIN ADMIN -->
-    <div class="admin-login">
-        <h5>*Login Khusus Admin</h5>
-
-        <form action="admin/login.php" method="POST" id="adminForm">
-
-            <!-- auto isi username -->
-            <input type="text" name="username" value="konselor" readonly>
-
-            <!-- password admin -->
-            <input type="password" name="password" placeholder="" required>
-
-        </form>
-    </div>
-
-    <script>
-    document.querySelector(".admin-login input[name='password']").addEventListener("keydown", function(e){
-        if(e.key === "Enter"){
-            document.getElementById("adminForm").submit();
-        }
-    });
-    </script>
-
+  <small>
+    Respon 1x12 jam, tergantung kesediaan konselor
+  </small>
 </div>
+
+<script>
+function kirimWA(){
+
+  let nama = document.getElementById("nama").value;
+  let umur = document.getElementById("umur").value;
+  let alamat = document.getElementById("alamat").value;
+  let cerita = document.getElementById("cerita").value;
+  let jadwalRaw = document.getElementById("jadwal").value;
+
+  if(!nama || !umur || !alamat || !cerita || !jadwalRaw){
+    alert("Lengkapi semua data dulu ya");
+    return;
+  }
+
+  let jadwal = new Date(jadwalRaw).toLocaleString("id-ID", {
+    dateStyle: "full",
+    timeStyle: "short"
+  });
+
+  let now = new Date();
+  let tanggal = now.toLocaleDateString("id-ID");
+  let waktu = now.toLocaleTimeString("id-ID");
+
+  let jam = now.getHours();
+
+  let respon = (jam >= 6 && jam < 18)
+    ? "akan dibalas malam (±12 jam)"
+    : "akan dibalas pagi (±12 jam)";
+
+  let pesan =
+`FORM KONSELING MAS MUNIB
+
+Tanggal Kirim: ${tanggal}
+Waktu Kirim: ${waktu}
+
+Nama: ${nama}
+Umur: ${umur}
+Alamat: ${alamat}
+
+Cerita:
+${cerita}
+
+Jadwal Konseling:
+${jadwal}
+
+Estimasi respon: ${respon}
+
+Sistem: respon 1x12 jam`;
+
+  let nomor = "6285232259397";
+
+  let url = "https://wa.me/" + nomor + "?text=" + encodeURIComponent(pesan);
+
+  window.open(url, "_blank");
+}
+</script>
 
 </body>
 </html>
